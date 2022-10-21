@@ -47,3 +47,37 @@ button {
 body {
   background-color: #90f6d7;
 }
+
+#mainField {
+  display: flex;
+  
+}
+
+#taskAndMapField {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#inmateInfo {
+  border: 2px solid steelblue;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.inmateInfoCard {
+  border: 1px solid #41506b;
+  border-radius: 10px;
+  background-color: #263849;
+  color: steelblue;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+
+}
+
+.yes{
+  color: red;
+  background-color: darkred;
+}
