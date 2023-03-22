@@ -41,16 +41,17 @@ function Prisonplan({prisonplan}){
 }
 
 function InmateInfo({name, surname, dateOut, isDangerous, sentence, photo}){
+  const release = () => alert('Are you sure you want to request for freedom for this inmate?');
   return(
-    <div class="inmateInfoCard">
+    <div className="inmateInfoCard">
       <h4>Inmate: {name} {surname}</h4>
-      <img src={photo} width='300vh' height='250vh'/>
+      <img src={photo} width='280vh' height='250vh'/>
       <p>Date out: {dateOut}</p>
       <p>{sentence}</p>
-      <p class={isDangerous}>Dangerous: {isDangerous}</p>
-      <button>Add warning</button>
-      {dateOut!=='life-sentence' && <button>Release Inmate</button>}
-      <button>Edit Inmate</button>
+      <p className={isDangerous}>Dangerous: {isDangerous}</p>
+      <button><img src='https://designlooter.com/images/warning-svg-3.png' height='15vh'/> Add warning</button>
+      {dateOut!=='life-sentence' && <button onClick={release} ><img src='http://cdn.onlinewebfonts.com/svg/img_438613.png' height='15vh'/> Release Inmate</button>}
+      <button><img src='http://cdn.onlinewebfonts.com/svg/img_169788.png' height='15vh'/> Edit Inmate</button>
     </div>
   )
 }
