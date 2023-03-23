@@ -6,10 +6,10 @@ class Person {
     dateOfBirth: string;
     photo: string;
 
-    constructor(){
-        this.name = faker.name.firstName();
-        this.surname = faker.name.lastName();
-        this.dateOfBirth = faker.date.birthdate({
+    constructor(name?:string, surname?: string, dateOfBirth?: string){
+        this.name = name? name : faker.name.firstName();
+        this.surname = surname? surname : faker.name.lastName();
+        this.dateOfBirth = dateOfBirth? dateOfBirth : faker.date.birthdate({
             min: 18,
             max: 100,
             mode: 'age'
@@ -17,51 +17,56 @@ class Person {
         this.photo = faker.image.avatar();
     }
 
-    introduce(): void {
+    introduce(): string {
         console.log(`
-        ${this.name} ${this.surname} was born in ${this.dateOfBirth}.
+        ${this.name} ${this.surname} was born on ${this.dateOfBirth}.
         `)
+        return `${this.name} ${this.surname} was born on ${this.dateOfBirth}.`
+
     }
 }
 
 class Personell extends Person {
     dateOfEmployment: Date;
+    superior: string;
     
-    constructor() {
-        super();
-        this.dateOfEmployment = faker.date.between(
+    constructor(name?:string, surname?: string, dateOfBirth?: string, dateOfEmployment?: Date) {
+        super(name, surname, dateOfBirth);
+        this.dateOfEmployment = dateOfEmployment ? dateOfEmployment : faker.date.between(
             this.dateOfBirth, Date.now()
-        )
+        );
+        this.superior = faker.name.fullName();
     }
 
-    checkEmployee(): void {
+    checkEmployee(): string {
         console.log(
             `
-            ${this.name} ${this.surname} is an employee since ${this.dateOfEmployment.toDateString()}.
+            ${this.name} ${this.surname} is an employee since ${this.dateOfEmployment.toDateString()} and is a subordinate of ${this.superior}.
             `
         )
+        return `${this.name} ${this.surname} is an employee since ${this.dateOfEmployment.toDateString()} and is a subordinate of ${this.superior}.`
     }
 }
 
 class Guard extends Personell {
     rankNumber: number;
     rank: string;
-    superior: string;
     rankSet = ['Private', 'Corporal', 'Sergeant', 'Lieutenant', "Captain", "Major"];
 
-    constructor() {
-        super();
+    constructor(name?:string, surname?: string, dateOfBirth?: string, dateOfEmployment?: Date, rank?: string) {
+        super(name, surname, dateOfBirth, dateOfEmployment);
         this.rankNumber = Math.floor(Math.random()*4);
-        this.rank = this.rankSet[this.rankNumber];
+        this.rank = rank? rank : this.rankSet[this.rankNumber];
         this.superior = `${this.rankSet[this.rankNumber+1]} ${faker.name.fullName()}`;
     }
 
-    checkGuard(): void {
+    checkEmployee(): string {
         console.log(
             `
-            ${this.rank} ${this.name} ${this.surname} is a subordinate of ${this.superior}.
+            ${this.rank} ${this.name} ${this.surname} is an employee since ${this.dateOfEmployment.toDateString()} and is a subordinate of ${this.superior}.
             `
         )
+        return `${this.rank} ${this.name} ${this.surname} is an employee since ${this.dateOfEmployment.toDateString()} and is a subordinate of ${this.superior}.`
     }
 
 }
@@ -72,24 +77,26 @@ class Administration extends Personell {
     specialization: string;
     specSet = ['cleaner', 'doctor', 'accountant', 'human resources', 'nurse', 'office worker', 'psychologist', 'director'];
 
-    constructor() {
-        super();
-        this.room = Math.floor(Math.random()*100);
+    constructor(name?:string, surname?: string, dateOfBirth?: string, dateOfEmployment?: Date, room?: number, specialization?: string) {
+        super(name, surname, dateOfBirth, dateOfEmployment);
+        this.room = room ? room : Math.floor(Math.random()*100);
         this.specNumber = Math.floor(Math.random()*8);
-        this.specialization = this.specSet[this.specNumber];
+        this.specialization = specialization ? specialization : this.specSet[this.specNumber];
     }
 
-    checkAdministration():void {
+    checkAdministration(): string {
         console.log(`
-            ${this.name} ${this.surname} is a ${this.specialization} and works in a ${this.room} room.
+            ${this.name} ${this.surname} is a ${this.specialization} and works in room number: ${this.room}.
         `)
+        return `${this.name} ${this.surname} is a ${this.specialization} and works in room number: ${this.room}.`
     }
 }
 
 class Inmate extends Person {
+    inmateNumber: number;
     dateOfImprisonment: Date;
-    sentence: string;
     dateOut: Date;
+    sentence: string;
     isDangerous: boolean;
     punishments: string[];
     sentenceNumber: number;
@@ -97,44 +104,52 @@ class Inmate extends Person {
     punishNumber: number;
     punishmentsSet = ['isolation', 'warning', 'no visits', 'no working', 'no TV'];
 
-    constructor() {
-        super();
-        this.name = faker.name.firstName('male');
-        this.dateOfImprisonment = faker.date.between(
+    constructor(name?:string, surname?: string, dateOfBirth?: string, inmateNumber?: number, dateOfImprisonment?: Date, dateOut?: Date, sentence?: string, isDangerous?: boolean, punishments?: string[])  {
+        super(name, surname, dateOfBirth);
+        this.inmateNumber = inmateNumber ? inmateNumber : Math.floor(Math.random()*100000);
+        this.name = name ? name : faker.name.firstName('male');
+        this.dateOfImprisonment = dateOfImprisonment ? dateOfImprisonment : faker.date.between(
             this.dateOfBirth, Date.now()
         );
-        this.sentenceNumber = Math.floor(Math.random()*5);
-        this.punishNumber = Math.floor(Math.random()*5);
-        this.sentence = this.sentenceSet[this.sentenceNumber];
-        this.punishments=[];
-        for (let i=0;i<=this.punishNumber;i++){
-            this.punishments.push(this.punishmentsSet[Math.floor(Math.random()*5)])
-        };
         this.dateOut = faker.date.between(
             Date.now(), '2050-01-01T00:00:00.000Z'
         );
+        this.sentenceNumber = Math.floor(Math.random()*5);
+        this.punishNumber = Math.floor(Math.random()*5);
+        this.sentence = sentence ? sentence : this.sentenceSet[this.sentenceNumber];
         (this.sentence == 'killer' || this.sentence == 'rapist')? this.isDangerous = true : this.isDangerous = false;
+        this.punishments = punishments ? punishments : [];
+        if (this.punishments.length ===0 ){
+        for (let i=0;i<=this.punishNumber;i++){
+            this.punishments.push(this.punishmentsSet[Math.floor(Math.random()*5)])
+        }};
     }
-    checkInmate():void {
+    checkInmate(): string {
         console.log(`
-            ${this.name} ${this.surname} is an inmate since ${this.dateOfImprisonment.toDateString()}. Planned date to out is ${this.dateOut.toDateString()}. 
+            ${this.inmateNumber} - ${this.name} ${this.surname} is an inmate since ${this.dateOfImprisonment.toDateString()}. Planned date to out is ${this.dateOut.toDateString()}. 
             Inprisoned for being a ${this.sentence} and is${this.isDangerous? '': ' not'} dangerous. During his stay he was punished ${this.punishments.length} times, with:
             ${this.punishments}.
         `)
+        return `${this.inmateNumber} - ${this.name} ${this.surname} is an inmate since ${this.dateOfImprisonment.toDateString()}. Planned date to out is ${this.dateOut.toDateString()}. 
+        Inprisoned for being a ${this.sentence} and is${this.isDangerous? '': ' not'} dangerous. During his stay he was punished ${this.punishments.length} times, with:
+        ${this.punishments}.`
     }
 }
 
-/*const person = new Person;
+const person = new Person;
 person.introduce();
 
-const personell = new Personell;
+const myPerson = new Person('Jan', "Nowak")
+myPerson.introduce()
+
+const personell = new Personell('Janina', 'Kowalska');
 personell.introduce();
-personell.checkEmployee();*/
+personell.checkEmployee();
 
 const guard = new Guard;
 guard.introduce();
 guard.checkEmployee();
-guard.checkGuard();
+//guard.checkGuard();
 
 const administrationWorker = new Administration;
 administrationWorker.introduce();
@@ -144,3 +159,16 @@ administrationWorker.checkAdministration();
 const inmate = new Inmate;
 inmate.introduce();
 inmate.checkInmate();
+
+
+const listOfInmates = [new Inmate('Robert', 'Bandzior')];
+const generateInmates = ()=> {
+    for (let i=0; i<5; i++){
+        listOfInmates.push(
+            new Inmate
+        )
+    } 
+    //console.log(listOfInmates);
+    return listOfInmates;
+}
+generateInmates();
