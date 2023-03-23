@@ -55,7 +55,7 @@ class Guard extends Personell {
 
     constructor(name?:string, surname?: string, dateOfBirth?: string, dateOfEmployment?: Date, rank?: string) {
         super(name, surname, dateOfBirth, dateOfEmployment);
-        this.rankNumber = Math.floor(Math.random()*4);
+        this.rankNumber = Math.floor(Math.random()*(this.rankSet.length-2));
         this.rank = rank? rank : this.rankSet[this.rankNumber];
         this.superior = `${this.rankSet[this.rankNumber+1]} ${faker.name.fullName()}`;
     }
@@ -80,7 +80,7 @@ class Administration extends Personell {
     constructor(name?:string, surname?: string, dateOfBirth?: string, dateOfEmployment?: Date, room?: number, specialization?: string) {
         super(name, surname, dateOfBirth, dateOfEmployment);
         this.room = room ? room : Math.floor(Math.random()*100);
-        this.specNumber = Math.floor(Math.random()*8);
+        this.specNumber = Math.floor(Math.random()*this.specSet.length);
         this.specialization = specialization ? specialization : this.specSet[this.specNumber];
     }
 
@@ -114,14 +114,14 @@ class Inmate extends Person {
         this.dateOut = faker.date.between(
             Date.now(), '2050-01-01T00:00:00.000Z'
         );
-        this.sentenceNumber = Math.floor(Math.random()*5);
-        this.punishNumber = Math.floor(Math.random()*5);
+        this.sentenceNumber = Math.floor(Math.random()*this.sentenceSet.length);
+        this.punishNumber = Math.floor(Math.random()*this.punishmentsSet.length);
         this.sentence = sentence ? sentence : this.sentenceSet[this.sentenceNumber];
         (this.sentence == 'killer' || this.sentence == 'rapist')? this.isDangerous = true : this.isDangerous = false;
         this.punishments = punishments ? punishments : [];
         if (this.punishments.length ===0 ){
         for (let i=0;i<=this.punishNumber;i++){
-            this.punishments.push(this.punishmentsSet[Math.floor(Math.random()*5)])
+            this.punishments.push(this.punishmentsSet[Math.floor(Math.random()*this.punishmentsSet.length)])
         }};
     }
     checkInmate(): string {
@@ -162,8 +162,8 @@ inmate.checkInmate();
 
 
 const listOfInmates = [new Inmate('Robert', 'Bandzior')];
-const generateInmates = ()=> {
-    for (let i=0; i<5; i++){
+const generateInmates = (number: number)=> {
+    for (let i=0; i<number; i++){
         listOfInmates.push(
             new Inmate
         )
@@ -171,4 +171,4 @@ const generateInmates = ()=> {
     //console.log(listOfInmates);
     return listOfInmates;
 }
-generateInmates();
+generateInmates(5);
