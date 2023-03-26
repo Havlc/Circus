@@ -37,12 +37,18 @@ export class Inmate extends Person {
     }
     checkInmate(): string {
         console.log(`
-            ${this.inmateNumber} - ${this.name} ${this.surname} is an inmate since ${this.dateOfImprisonment.toDateString()}. Planned date to out is ${this.dateOut.toDateString()}. 
-            Inprisoned for being a ${this.sentence} and is${this.isDangerous? '': ' not'} dangerous. During his stay he was punished ${this.punishments.length} times, with:
+            ${this.inmateNumber} - ${this.name} ${this.surname} is an inmate since 
+            ${typeof(this.dateOfImprisonment)==='string'? this.dateOfImprisonment:this.dateOfImprisonment.toDateString()}. 
+            Planned date to out is ${typeof(this.dateOut)==='string'?this.dateOut:this.dateOut.toDateString()}. 
+            Inprisoned for being a ${this.sentence} and is${this.isDangerous? '': ' not'} dangerous. 
+            During his stay he was punished ${this.punishments.length} times, with:
             ${this.punishments}.
         `)
-        return `${this.inmateNumber} - ${this.name} ${this.surname} is an inmate since ${this.dateOfImprisonment.toDateString()}. Planned date to out is ${this.dateOut.toDateString()}. 
-        Inprisoned for being a ${this.sentence} and is${this.isDangerous? '': ' not'} dangerous. During his stay he was punished ${this.punishments.length} times, with:
+        return `${this.inmateNumber} - ${this.name} ${this.surname} is an inmate since 
+        ${typeof(this.dateOfImprisonment)==='string'? this.dateOfImprisonment:this.dateOfImprisonment.toDateString()}. 
+        Planned date to out is ${typeof(this.dateOut)==='string'?this.dateOut:this.dateOut.toDateString()}. 
+        Inprisoned for being a ${this.sentence} and is${this.isDangerous? '': ' not'} dangerous. 
+        During his stay he was punished ${this.punishments.length} times, with:
         ${this.punishments}.`
     }
 }
