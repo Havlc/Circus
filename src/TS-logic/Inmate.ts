@@ -4,7 +4,7 @@ import { Person } from './Person';
 export class Inmate extends Person {
     inmateNumber: number;
     dateOfImprisonment: Date;
-    dateOut: Date;
+    dateOut: Date | string;
     sentence: string;
     isDangerous: boolean;
     punishments: string[];
@@ -20,7 +20,7 @@ export class Inmate extends Person {
         this.dateOfImprisonment = dateOfImprisonment ? dateOfImprisonment : faker.date.between(
             this.dateOfBirth, Date.now()
         );
-        this.dateOut = faker.date.between(
+        this.dateOut = dateOut ? dateOut : faker.date.between(
             Date.now(), '2050-01-01T00:00:00.000Z'
         );
         this.sentenceNumber = Math.floor(Math.random()*this.sentenceSet.length);
@@ -31,8 +31,9 @@ export class Inmate extends Person {
         if (this.punishments.length ===0 ){
         for (let i=0;i<=this.punishNumber;i++){
             this.punishments.push(this.punishmentsSet[Math.floor(Math.random()*this.punishmentsSet.length)])
-            return;
+            // console.log(this.punishments)
         }};
+       // console.log(this.punishments + "from constructor")
     }
     checkInmate(): string {
         console.log(`
