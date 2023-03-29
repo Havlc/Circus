@@ -31,6 +31,18 @@ button:hover {
   border: 2px solid steelblue;
 }
 
+.warningBtn{
+  background-color: orange;
+}
+
+.releaseBtn{
+  background-color: red;
+}
+
+.editBtn{
+  background-color: white;
+}
+
 #logoutBtn {
   border-color:  orange;
   border-radius: 2px;
@@ -105,4 +117,10 @@ body {
   flex-direction: row; 
   justify-content: space-around;
   background-color: #263849;
+}
+
+hr {
+  width: 100%;
+  padding: 0;
+  color: steelblue;
 }

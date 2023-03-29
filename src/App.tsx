@@ -31,7 +31,7 @@ inmate.checkInmate();
 const listOfInmates = []; //new Inmate('Robert', 'Bandzior')
 
 const generateInmates = (number: number)=> {
-    for (let i=1; i<number; i++){
+    for (let i=0; i<number; i++){
          listOfInmates.push(
             new Inmate
         )
@@ -43,6 +43,8 @@ generateInmates(12);
 
 const guardian = new Guard;
 // console.log(guardian)
+console.log(guardian)
+console.log(guardian.duties)
 
 function Navigation({rank, name, surname, superior}: Guard){
   return (
@@ -70,11 +72,11 @@ function Heading() {
   )
 }
 
-function Tasks({duties}: string[]){
+function Tasks(guardian: string[]){
   return(
     <>
       <h4>Today you've been ordered to:</h4>
-      <ol>{duties.map((item: string, index:number)=><li key={index}><input type="checkbox"></input>{item}</li>)}</ol>
+      <ol>{[...guardian.duties].map((item: string, index:number)=><li key={index}><input type="checkbox"></input>{item}</li>)}</ol>
     </>
   )
 }
@@ -107,9 +109,10 @@ function InmateInfo({inmateNumber, name, surname, dateOut, isDangerous, sentence
       <p>Punishments:</p>
       <p>{punishmentList}</p>
       <p className={isDangerous.toString()}>Dangerous{isDangerous}</p>
-      <button onClick={handleAddWarning}><img src='https://designlooter.com/images/warning-svg-3.png' height='15vh'/> Add warning</button>
-      {dateOut!=='life-sentence' && <button onClick={release} ><img src='http://cdn.onlinewebfonts.com/svg/img_438613.png' height='15vh'/> Release Inmate</button>}
-      <button><img src='http://cdn.onlinewebfonts.com/svg/img_169788.png' height='15vh'/> Edit Inmate</button>
+      <hr/>
+      <button onClick={handleAddWarning} className='warningBtn'><img src='https://designlooter.com/images/warning-svg-3.png' height='15vh'/> Add warning</button>
+      {dateOut!=='life-sentence' && <button onClick={release} className='releaseBtn'><img src='http://cdn.onlinewebfonts.com/svg/img_438613.png' height='15vh'/> Release Inmate</button>}
+      <button className='editBtn'><img src='http://cdn.onlinewebfonts.com/svg/img_169788.png' height='15vh'/> Edit Inmate</button>
     </div>
   )
 }
@@ -129,7 +132,7 @@ function App() {
       <Navigation rank={guardian.rank} name={guardian.name} surname={guardian.surname} dateOfBirth={guardian.dateOfBirth} dateOfEmployment={guardian.dateOfEmployment} superior={guardian.superior}/>
       <div id='mainField'>
         <div id='taskAndMapField'>
-          <Tasks duties={['check cells', 'take prisoner #286 to the doctor', 'secure visiting hours', 'take prisoner #782 for a walk', 'prepare request for punishment for prisoner #112', 'write daily report']}/>
+          <Tasks duties={guardian.duties}/>
           <Prisonplan prisonplan={'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Fremantle_Prison_map.svg/303px-Fremantle_Prison_map.svg.png'} />
         </div>
         <div id='inmateInfo'>
