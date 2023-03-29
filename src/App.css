@@ -71,11 +71,38 @@ body {
   margin: 0.5vh 0;
 }
 
+.punishmentList{
+  background-color: steelblue;
+  color: #263849;
+  position: relative;
+  margin-bottom:0.5vh;
+  padding: 0.5vh 10vh;
+  list-style-type: none;
+  text-align: center;
+}
+
 .true{
   color: red;
   background-color: darkred;
+  margin-bottom:0.5vh;
+  padding: 0.5vh 10vh;
+  text-align: center;
 }
 
 .false {
   visibility: hidden;
+}
+
+#navigationDiv {
+  color: "#35bcbf";
+  background-color: #41506b;
+  display: flex; 
+  justify-content: space-between;
+  }
+  
+#headingDiv {
+  display: flex; 
+  flex-direction: row; 
+  justify-content: space-around;
+  background-color: #263849;
 }

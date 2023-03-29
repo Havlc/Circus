@@ -18,9 +18,9 @@ export class Person {
     }
 
     introduce(): string {
-        console.log(`
+        /*console.log(`
         ${this.name} ${this.surname} was born on ${this.dateOfBirth}.
-        `)
+        `)*/
         return `${this.name} ${this.surname} was born on ${this.dateOfBirth}.`
 
     }
